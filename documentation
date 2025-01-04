@@ -1,1 +1,51 @@
+Overview
+  This program is a jumble solver written in Python. It takes a word (or a group of letters) from the user and finds all possible valid words (sub-anagrams) that can be made from those letters using a word list.
 
+Files Needed
+  jumble_solver.py: The main Python program.
+  word_list.txt: A text file containing valid English words. You can download it from dwyl/english-words (use the file called words_alpha.txt).
+
+How It Works
+Input:
+  The program needs two inputs:
+    The path to the word list file (for example, word_list.txt).
+    A word (or set of letters) to solve (for example, dog).
+Output:
+  It prints all valid words (sub-anagrams) that can be made using the given letters.
+
+Steps:
+  Load the word list into memory.
+  Count the letters in the input word.
+  Check each word in the word list:
+  If the word can be made from the given letters, it is added to the result.
+  Print the matching words.
+
+Complexity Analysis
+  Loading the Word List:
+    The program reads all words into a set.
+    Time Complexity: O(n), where n is the number of words in the word list.
+    Space Complexity: O(n), for storing the words in memory.
+  Finding Sub-Anagrams:
+    The program checks each word in the word list to see if it can be made from the input letters.
+  Time Complexity:
+    Checking one word takes O(k), where k is the length of the word.
+    For all words, it is O(m * k), where m is the total number of words.
+    Space Complexity: O(1), since no extra memory is used for these checks.
+  Overall Complexity:
+    Time: O(n + m * k), where n is the number of words and m is the number of checks.
+    Space: O(n), to store the word list.
+
+Key Functions
+  load_words(word_file): Reads the word list from the file and returns it as a set.
+  find_sub_anagrams(letters, word_list): Finds all valid sub-anagrams using the given letters.
+  main(): Handles user input and runs the program.
+
+Explanation of Complexity
+  Fast Lookups: The program uses a set for storing the word list because it is faster than using a list.
+  Checks Every Word: The program goes through all the words in the word list to see if they can be made from the input letters.
+  Handles Large Lists: The program can process large word lists like words_alpha.txt efficiently.
+
+What is a Sub-Anagram? A word that can be made using some or all of the given letters, like "do" or "god" from "dog".
+Why Use a Set? Sets are faster for checking words than lists.
+
+Enjoy solving your puzzles!
