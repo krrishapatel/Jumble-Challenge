@@ -1,20 +1,20 @@
 import sys
 from typing import List, Set
 
-# Function to load the words from the file
+# Load words from the file
 def load_words(word_file: str) -> Set[str]:
     with open(word_file, 'r') as file:
         words = {line.strip().lower() for line in file}
     return words
 
-# Function to count the frequency of each letter in a string
+# Count the frequency of each letter in a string
 def letter_count(word: str) -> dict:
     count = {}
     for char in word:
         count[char] = count.get(char, 0) + 1
     return count
 
-# Function to find sub-anagrams based on the letters
+# Find sub-anagrams based on the letters
 def find_sub_anagrams(letters: str, word_list: Set[str]) -> List[str]:
     input_letter_count = letter_count(letters)
     sub_anagrams = []
@@ -47,6 +47,6 @@ def main():
     
     print("\n".join(sorted(sub_anagrams)))
 
-# This is where the program starts
+# Program starts
 if __name__ == "__main__":
     main()
