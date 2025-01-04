@@ -1,38 +1,54 @@
-from collections import Counter
-from typing import List
+import sys
+from typing import List, Set
 
-def load_word_list(file_path: str) -> List[str]:
-    """
-    Load a word list from a file into a list of words.
-    """
-    with open(file_path, 'r') as file:
-        return [line.strip().lower() for line in file]
 
-def is_sub_anagram(word: str, letters: str) -> bool:
-    """
-    Check if a word is a sub-anagram of the given letters.
-    """
-    word_counter = Counter(word)
-    letters_counter = Counter(letters)
-    # Check if each letter in the word can be formed from the letters
-    return all(word_counter[char] <= letters_counter[char] for char in word_counter)
+def load_words(word_file: str) -> Set[str]:
+    """Load words from the given file into a set for fast lookups."""
+    try:
+        with open(word_file, 'r') as file:
+            words = set(file.read().splitlines())
+        return words
+    except FileNotFoundError:
+        print(f"Error: The file {word_file} was not found.")
+        sys.exit(1)
 
-def jumble_solver(word_list_path: str, letters: str) -> List[str]:
+
+def find_sub_anagrams(letters: str, word_list: Set[str]) -> List[str]:
     """
-    Find all sub-anagrams of the input letters from the word list.
+    Find all sub-anagrams of the given letters in the word list.
+    
+    Args:
+        letters (str): The input letters to find sub-anagrams for.
+        word_list (Set[str]): The set of valid words to search against.
+    
+    Returns:
+        List[str]: A list of matching sub-anagrams.
     """
-    # Load word list
-    word_list = load_word_list(word_list_path)
-    # Find matching sub-anagrams
-    results = [word for word in word_list if is_sub_anagram(word, letters)]
-    return sorted(results)  # Sort results alphabetically
+    from collections import Counter
+
+    input_counter = Counter(letters)
+
+    def is_valid(word: str) -> bool:
+        """Check if a word can be formed using the given letters."""
+        word_counter = Counter(word)
+        return all(word_counter[char] <= input_counter[char] for char in word_counter)
+
+    return [word for word in word_list if is_valid(word)]
+
+
+def main():
+    if len(sys.argv) != 3:
+        print("Usage: python3 jumble_solver.py <word_list.txt> <letters>")
+        sys.exit(1)
+
+    word_file = sys.argv[1]
+    letters = sys.argv[2].lower()
+
+    word_list = load_words(word_file)
+    matches = find_sub_anagrams(letters, word_list)
+
+    print("\n".join(sorted(matches)))
+
 
 if __name__ == "__main__":
-    # Input: word list file and scrambled letters
-    word_list_file = input("Enter the path to the word list file: ").strip()
-    letters = input("Enter the letters: ").strip().lower()
-    # Solve the jumble
-    results = jumble_solver(word_list_file, letters)
-    # Output results
-    print("\nMatching sub-anagrams:")
-    print("\n".join(results))
+    main()
